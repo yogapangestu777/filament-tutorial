@@ -2,40 +2,54 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CuttingResource\Pages;
+use App\Filament\Resources\TailorResource\Pages;
+use App\Models\Tailor;
+use App\Models\User;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use App\Models\Cutting;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Radio;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Textarea;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
-use Illuminate\Support\Facades\Auth;
 
-class CuttingResource extends Resource
+class TailorResource extends Resource
 {
-    protected static ?string $model = Cutting::class;
+    protected static ?string $model = Tailor::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-scissors';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationLabel = 'Pemotongan';
+    protected static ?string $navigationLabel = 'Penjahit';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Grid::make()->schema([
-                    Hidden::make(name: 'enhancer')->default(Auth::user()->id),
-                    TextInput::make(name: 'roll')->label('Roll')->required(),
-                    TextInput::make(name: 'cutting_result')->label('Hasil Potongan')->required(),
-                    TextInput::make(name: 'material')->label('Bahan')->required(),
-                    TextInput::make(name: 'size')->label('Ukuran')->required(),
-                    TextInput::make(name: 'model')->label('Model')->required(),
+                    Select::make('enhancer')
+                        ->label('Pegawai')
+                        ->options(User::all()->pluck('name', 'id'))
+                        ->searchable()
+                        ->required(),
                     TextInput::make(name: 'motive')->label('Motif')->required(),
-                    TextInput::make(name: 'product')->label('Produk')->required(),
+                    Radio::make('type')
+                        ->label('Tipe')
+                        ->options([
+                            '0' => 'Jahit Biasa',
+                            '1' => 'Sample'
+                        ])
+                        ->required(),
+                    TextInput::make(name: 'amount')->label('Jumlah')->required(),
+                    FileUpload::make('image')->label('Gambar')->required(),
+                    Textarea::make(name: 'information')->label('Informasi')->required(),
                     Hidden::make(name: 'date')->default(now()->format('Y-m-d'))
                 ]),
             ]);
@@ -47,13 +61,10 @@ class CuttingResource extends Resource
             ->columns([
                 TextColumn::make('getenhancer.name')->label('Nama')->searchable(),
                 TextColumn::make('date')->label('Tanggal')->searchable(),
-                TextColumn::make('roll')->label('Roll')->searchable(),
-                TextColumn::make('cutting_result')->label('Hasil Potongan')->searchable(),
-                TextColumn::make('material')->label('Bahan')->searchable(),
-                TextColumn::make('size')->label('Ukuran')->searchable(),
-                TextColumn::make('model')->label('Model')->searchable(),
                 TextColumn::make('motive')->label('Motif')->searchable(),
-                TextColumn::make('product')->label('Produk')->searchable(),
+                TextColumn::make('type')->label('Tipe')->searchable(),
+                TextColumn::make('amount')->label('Jumlah')->searchable(),
+                ImageColumn::make('image')->label('Gambar'),
             ])
             ->filters([])
             ->actions([
@@ -82,16 +93,18 @@ class CuttingResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCuttings::route('/'),
-            'create' => Pages\CreateCutting::route('/create'),
-            'view' => Pages\ViewCutting::route('/{record}'),
-            'edit' => Pages\EditCutting::route('/{record}/edit'),
+            'index' => Pages\ListTailors::route('/'),
+            'create' => Pages\CreateTailor::route('/create'),
+            'view' => Pages\ViewTailor::route('/{record}'),
+            'edit' => Pages\EditTailor::route('/{record}/edit'),
         ];
     }
 
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->with('getenhancer');
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 }

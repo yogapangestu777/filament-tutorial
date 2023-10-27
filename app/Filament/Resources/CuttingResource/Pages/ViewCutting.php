@@ -9,7 +9,7 @@ use Filament\Resources\Pages\ViewRecord;
 class ViewCutting extends ViewRecord
 {
     protected static string $resource = CuttingResource::class;
-    protected static ?string $title = 'Lihat Pemotongan';
+    protected static ?string $title = 'Lihat Data Pemotongan';
 
     protected function getHeaderActions(): array
     {

@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Filament\Resources\CuttingResource\Pages;
+namespace App\Filament\Resources\TailorResource\Pages;
 
-use App\Filament\Resources\CuttingResource;
+use App\Filament\Resources\TailorResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditCutting extends EditRecord
+class EditTailor extends EditRecord
 {
-    protected static string $resource = CuttingResource::class;
-    protected static ?string $title = 'Edit Data Pemotongan';
+    protected static string $resource = TailorResource::class;
+    protected static ?string $title = 'Edit Data Penjahit';
 
     protected function getHeaderActions(): array
     {

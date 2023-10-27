@@ -10,5 +10,5 @@ class CreateCutting extends CreateRecord
 {
     protected static string $resource = CuttingResource::class;
     
-    protected static ?string $title = 'Tambah Pemotongan';
+    protected static ?string $title = 'Tambah Data Pemotongan';
 }
