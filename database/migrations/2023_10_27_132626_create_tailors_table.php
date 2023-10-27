@@ -13,7 +13,16 @@ return new class extends Migration
     {
         Schema::create('tailors', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->unsignedBigInteger('enhancer');
+            $table->date('date');
+            $table->string('motive');
+            $table->string('amount');
+            $table->enum('type', ['0', '1']);
+            $table->string('image');
+            $table->string('information');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
+            $table->softDeletes();
         });
     }
 

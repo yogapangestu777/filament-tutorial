@@ -13,7 +13,18 @@ return new class extends Migration
     {
         Schema::create('cutting', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->unsignedBigInteger('enhancer');
+            $table->string('roll');
+            $table->string('cutting_result');
+            $table->string('material');
+            $table->string('size');
+            $table->string('model');
+            $table->string('motive');
+            $table->string('product');
+            $table->date('date');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
+            $table->softDeletes();
         });
     }
 
