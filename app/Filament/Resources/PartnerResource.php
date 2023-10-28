@@ -22,10 +22,11 @@ use Illuminate\Support\Facades\Auth;
 class PartnerResource extends Resource
 {
     protected static ?string $model = Partner::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
     protected static ?string $navigationLabel = 'Rekan Bisnis';
+    protected static ?string $modelLabel = 'Rekan Bisnis';
+    protected static ?string $navigationGroup = 'Master';
+    protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
     {
@@ -45,15 +46,17 @@ class PartnerResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('date')->label('Tanggal')->searchable(),
-                TextColumn::make('name')->label('Nama')->searchable(),
-                TextColumn::make('amount')->label('Jumlah')->searchable(),
-                TextColumn::make('information')->label('Informasi')->searchable(),
+                TextColumn::make('date')->label('Tanggal')->sortable()->searchable(),
+                TextColumn::make('name')->label('Nama')->sortable()->searchable(),
+                TextColumn::make('amount')->label('Jumlah')->sortable()->searchable(),
+                TextColumn::make('information')->label('Informasi')->sortable()->searchable(),
             ])
+            ->defaultSort('id','desc')
             ->filters([])
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                // Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

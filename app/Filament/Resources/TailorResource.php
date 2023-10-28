@@ -24,10 +24,11 @@ use Filament\Tables\Columns\TextColumn;
 class TailorResource extends Resource
 {
     protected static ?string $model = Tailor::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
     protected static ?string $navigationLabel = 'Penjahit';
+    protected static ?string $modelLabel = 'Penjahit';
+    protected static ?string $navigationGroup = 'Master';
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
@@ -59,16 +60,17 @@ class TailorResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('getenhancer.name')->label('Nama')->searchable(),
-                TextColumn::make('date')->label('Tanggal')->searchable(),
-                TextColumn::make('motive')->label('Motif')->searchable(),
-                TextColumn::make('type')->label('Tipe')->searchable(),
-                TextColumn::make('amount')->label('Jumlah')->searchable(),
+                TextColumn::make('getenhancer.name')->label('Nama')->sortable()->searchable(),
+                TextColumn::make('date')->label('Tanggal')->sortable()->searchable(),
+                TextColumn::make('motive')->label('Motif')->sortable()->searchable(),
+                TextColumn::make('type')->label('Tipe')->sortable()->searchable(),
+                TextColumn::make('amount')->label('Jumlah')->sortable()->searchable(),
                 ImageColumn::make('image')->label('Gambar'),
             ])
+            ->defaultSort('id','desc')
             ->filters([])
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                // Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
@@ -81,8 +83,7 @@ class TailorResource extends Resource
             ])
             ->emptyStateActions([
                 Tables\Actions\CreateAction::make(),
-            ])
-            ->tableFilters('');
+            ]);
     }
 
     public static function getRelations(): array

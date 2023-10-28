@@ -18,15 +18,18 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Data Pegawai';
+    protected static ?string $modelLabel = 'Data Pegawai';
+    protected static ?string $navigationGroup = 'Kelola';
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {
@@ -63,24 +66,34 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->label('Nama')->searchable(),
-                TextColumn::make('phone')->label('no Telepon')->searchable(),
-                TextColumn::make('entrance_date')->label('Tanggal Masuk')->searchable(),
-                TextColumn::make('out_date')->label('Tanggal Keluar')->searchable(),
-                TextColumn::make('salary')->label('Gaji Pokok')->searchable(),
+                TextColumn::make('name')->label('Nama')->sortable()->searchable(),
+                TextColumn::make('phone')->label('no Telepon')->sortable()->searchable(),
+                TextColumn::make('entrance_date')
+                    ->label('Tanggal Masuk')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('out_date')
+                    ->label('Tanggal Keluar')
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('salary')->label('Gaji Pokok')->sortable()->searchable(),
                 TextColumn::make('status')->label('Status Akun')->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'active' => 'success',
                         'inactive' => 'danger',
                     })
-                    ->searchable(),
+                    ->sortable()
+                    ->searchable()
             ])
+            ->defaultSort('id', 'desc')
             ->filters([
                 // Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                // Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -93,6 +106,14 @@ class UserResource extends Resource
                 Tables\Actions\CreateAction::make(),
             ]);
     }
+
+    // public static function infolist(Infolist $infolist): Infolist
+    // {
+    //     return $infolist
+    //         ->schema([
+    //             TextEntry::make('name')
+    //         ]);
+    // }
 
     public static function getRelations(): array
     {
