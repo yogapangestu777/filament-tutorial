@@ -27,6 +27,14 @@ class PartnerResource extends Resource
     protected static ?string $modelLabel = 'Rekan Bisnis';
     protected static ?string $navigationGroup = 'Master';
     protected static ?int $navigationSort = 3;
+    public static function shouldRegisterNavigation(): bool
+    {
+        if (Auth::user()->role == 2) {
+            return true;
+        }
+
+        return false;
+    }
 
     public static function form(Form $form): Form
     {
@@ -51,7 +59,7 @@ class PartnerResource extends Resource
                 TextColumn::make('amount')->label('Jumlah')->sortable()->searchable(),
                 TextColumn::make('information')->label('Informasi')->sortable()->searchable(),
             ])
-            ->defaultSort('id','desc')
+            ->defaultSort('id', 'desc')
             ->filters([])
             ->actions([
                 // Tables\Actions\ViewAction::make(),

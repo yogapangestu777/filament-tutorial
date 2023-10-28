@@ -20,6 +20,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Support\Facades\Auth;
 
 class TailorResource extends Resource
 {
@@ -29,6 +30,14 @@ class TailorResource extends Resource
     protected static ?string $modelLabel = 'Penjahit';
     protected static ?string $navigationGroup = 'Master';
     protected static ?int $navigationSort = 2;
+    public static function shouldRegisterNavigation(): bool
+    {
+        if (Auth::user()->role == 2 || Auth::user()->role == 4) {
+            return true;
+        }
+
+        return false;
+    }
 
     public static function form(Form $form): Form
     {
@@ -67,7 +76,7 @@ class TailorResource extends Resource
                 TextColumn::make('amount')->label('Jumlah')->sortable()->searchable(),
                 ImageColumn::make('image')->label('Gambar'),
             ])
-            ->defaultSort('id','desc')
+            ->defaultSort('id', 'desc')
             ->filters([])
             ->actions([
                 // Tables\Actions\ViewAction::make(),

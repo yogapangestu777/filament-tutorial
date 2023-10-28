@@ -27,6 +27,14 @@ class CuttingResource extends Resource
     protected static ?string $modelLabel = 'Pemotongan';
     protected static ?string $navigationGroup = 'Master';
     protected static ?int $navigationSort = 1;
+    public static function shouldRegisterNavigation(): bool
+    {
+        if (Auth::user()->role == 2 || Auth::user()->role == 3) {
+            return true;
+        }
+
+        return false;
+    }
 
     public static function form(Form $form): Form
     {

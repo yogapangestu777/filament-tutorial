@@ -21,6 +21,7 @@ use Filament\Tables\Columns\TextColumn;
 use Illuminate\Support\Facades\Hash;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
+use Illuminate\Support\Facades\Auth;
 
 class UserResource extends Resource
 {
@@ -30,6 +31,14 @@ class UserResource extends Resource
     protected static ?string $modelLabel = 'Data Pegawai';
     protected static ?string $navigationGroup = 'Kelola';
     protected static ?int $navigationSort = 4;
+    public static function shouldRegisterNavigation(): bool
+    {
+        if (Auth::user()->role == 2) {
+            return true;
+        }
+
+        return false;
+    }
 
     public static function form(Form $form): Form
     {
