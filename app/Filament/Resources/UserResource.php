@@ -30,7 +30,7 @@ class UserResource extends Resource
     protected static ?string $navigationLabel = 'Data Pegawai';
     protected static ?string $modelLabel = 'Data Pegawai';
     protected static ?string $navigationGroup = 'Kelola';
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 6;
     public static function shouldRegisterNavigation(): bool
     {
         if (Auth::user()->role == 2) {
