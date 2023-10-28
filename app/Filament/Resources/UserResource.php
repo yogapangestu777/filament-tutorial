@@ -111,9 +111,7 @@ class UserResource extends Resource
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ])
-            ->emptyStateActions([
-                Tables\Actions\CreateAction::make(),
-            ]);
+            ->emptyStateHeading('Belum Ada Data');
     }
 
     // public static function infolist(Infolist $infolist): Infolist

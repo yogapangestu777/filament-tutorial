@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\TailorResource\Pages;
-use App\Models\Tailor;
-use App\Models\User;
+use App\Filament\Resources\BonusResource\Pages;
+use App\Models\Bonus;
+use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -14,25 +14,21 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Hidden;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Radio;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Textarea;
-use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Support\Facades\Auth;
 
-class TailorResource extends Resource
+class BonusResource extends Resource
 {
-    protected static ?string $model = Tailor::class;
+    protected static ?string $model = Bonus::class;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationLabel = 'Penjahit';
-    protected static ?string $modelLabel = 'Penjahit';
-    protected static ?string $navigationGroup = 'Master';
+    protected static ?string $navigationLabel = 'Bonus';
+    protected static ?string $modelLabel = 'Bonus';
+    protected static ?string $navigationGroup = 'Kelola';
     protected static ?int $navigationSort = 2;
     public static function shouldRegisterNavigation(): bool
     {
-        if (Auth::user()->role == 2 || Auth::user()->role == 4) {
+        if (Auth::user()->role == 2) {
             return true;
         }
 
@@ -44,22 +40,8 @@ class TailorResource extends Resource
         return $form
             ->schema([
                 Grid::make()->schema([
-                    Select::make('enhancer')
-                        ->label('Pegawai')
-                        ->options(User::all()->pluck('name', 'id'))
-                        ->searchable()
-                        ->required(),
-                    TextInput::make(name: 'motive')->label('Motif')->placeholder('Masukan Motif')->required(),
-                    Radio::make('type')
-                        ->label('Tipe')
-                        ->options([
-                            '0' => 'Jahit Biasa',
-                            '1' => 'Sample'
-                        ])
-                        ->required(),
-                    TextInput::make(name: 'amount')->label('Jumlah')->required(),
-                    FileUpload::make('image')->label('Gambar')->required(),
-                    Textarea::make(name: 'information')->label('Informasi')->required(),
+                    Hidden::make(name: 'enhancer')->default(Auth::user()->id),
+                    TextInput::make(name: 'amount')->label('Jumlah')->required()->placeholder('Masukan Jumlah Diskon'),
                     Hidden::make(name: 'date')->default(now()->format('Y-m-d'))
                 ]),
             ]);
@@ -69,12 +51,8 @@ class TailorResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('getenhancer.name')->label('Nama')->sortable()->searchable(),
                 TextColumn::make('date')->label('Tanggal')->sortable()->searchable(),
-                TextColumn::make('motive')->label('Motif')->sortable()->searchable(),
-                TextColumn::make('type')->label('Tipe')->sortable()->searchable(),
                 TextColumn::make('amount')->label('Jumlah')->sortable()->searchable(),
-                ImageColumn::make('image')->label('Gambar'),
             ])
             ->defaultSort('id', 'desc')
             ->filters([])
@@ -103,10 +81,10 @@ class TailorResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListTailors::route('/'),
-            'create' => Pages\CreateTailor::route('/create'),
-            'view' => Pages\ViewTailor::route('/{record}'),
-            'edit' => Pages\EditTailor::route('/{record}/edit'),
+            'index' => Pages\ListBonuses::route('/'),
+            'create' => Pages\CreateBonus::route('/create'),
+            'view' => Pages\ViewBonus::route('/{record}'),
+            'edit' => Pages\EditBonus::route('/{record}/edit'),
         ];
     }
 
