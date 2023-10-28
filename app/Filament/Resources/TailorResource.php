@@ -39,7 +39,7 @@ class TailorResource extends Resource
                         ->options(User::all()->pluck('name', 'id'))
                         ->searchable()
                         ->required(),
-                    TextInput::make(name: 'motive')->label('Motif')->required(),
+                    TextInput::make(name: 'motive')->label('Motif')->placeholder('Masukan Motif')->required(),
                     Radio::make('type')
                         ->label('Tipe')
                         ->options([
@@ -70,6 +70,7 @@ class TailorResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -80,7 +81,8 @@ class TailorResource extends Resource
             ])
             ->emptyStateActions([
                 Tables\Actions\CreateAction::make(),
-            ]);
+            ])
+            ->tableFilters('');
     }
 
     public static function getRelations(): array

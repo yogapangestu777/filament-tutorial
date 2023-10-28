@@ -69,7 +69,8 @@ class CuttingResource extends Resource
             ])
             ->emptyStateActions([
                 Tables\Actions\CreateAction::make(),
-            ]);
+            ])
+            ->whereNull('deleted_at');;
     }
 
     public static function getRelations(): array

@@ -34,8 +34,8 @@ class UserResource extends Resource
             ->schema([
                 Grid::make()->schema([
                     TextInput::make(name: 'name')->label('Nama')->required(),
-                    TextInput::make(name: 'email')->label('Email')->required(),
-                    TextInput::make(name: 'phone')->label('No Telepon')->required(),
+                    TextInput::make(name: 'email')->label('Email')->email()->required(),
+                    TextInput::make(name: 'phone')->label('No Telepon')->numeric()->required(),
                     DatePicker::make(name: 'entrance_date')->label('Tanggal Masuk')->required(),
                     TextInput::make(name: 'salary')->label('Gaji')->required(),
                     Hidden::make(name: 'password')->default(Hash::make('Dstcollection123@'))->label('Gaji')->required(),
