@@ -9,7 +9,7 @@ use Filament\Resources\Pages\ViewRecord;
 class ViewBonus extends ViewRecord
 {
     protected static string $resource = BonusResource::class;
-
+    protected static ?string $title = 'Lihat Data Bonus';
     protected function getHeaderActions(): array
     {
         return [

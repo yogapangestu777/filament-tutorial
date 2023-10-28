@@ -9,7 +9,7 @@ use Filament\Resources\Pages\ListRecords;
 class ListBonuses extends ListRecords
 {
     protected static string $resource = BonusResource::class;
-
+    protected static ?string $title = 'Data Bonus';
     protected function getHeaderActions(): array
     {
         return [

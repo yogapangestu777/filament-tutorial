@@ -21,14 +21,14 @@ class Cutting extends Model
         return $this->belongsTo(User::class, 'enhancer');
     }
 
-    protected static function booted(): void
-    {
-        if (auth()->check()) {
-            static::addGlobalScope('team', function (Builder $query) {
-                $query->where('id', auth()->user()->id);
-                // // or with a `team` relationship defined:
-                // $query->whereBelongsTo(auth()->user()->team);
-            });
-        }
-    }
+    // protected static function booted(): void
+    // {
+    //     if (auth()->check()) {
+    //         static::addGlobalScope('team', function (Builder $query) {
+    //             $query->where('id', auth()->user()->id);
+    //             // // or with a `team` relationship defined:
+    //             // $query->whereBelongsTo(auth()->user()->team);
+    //         });
+    //     }
+    // }
 }
